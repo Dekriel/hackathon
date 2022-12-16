@@ -47,7 +47,7 @@ def make_move(squareStart, squareEnd):
 
 @app.route('/assets/<path:path>')
 def get_assets(path):
-    with open(f'website/assets/{path}', 'r') as f:
+    with open(f'website/assets/{path}', 'rb') as f:
         return f.read()
 
 if __name__ == '__main__':

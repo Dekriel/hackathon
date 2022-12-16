@@ -6,20 +6,7 @@
     var width;
     var height;
 
-    // origin is top left
-    function get_bottom_left(x, y) {
-      console.assert(x < 8 && x >= 0);
-      console.assert(y < 8 && y >= 0);
-
-      return [width * x, height * (7 - y)];
-    }
-    
-    function init() {
-      canvas = document.getElementById('myCanvas');
-      ctx = canvas.getContext('2d');
-      width = canvas.width / 8;
-      height = canvas.height / 8;
-
+    function draw_chess_board() {
       for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {
           if (row % 2 != col % 2) continue;
@@ -32,10 +19,41 @@
       }
     }
 
+    // origin is top left
+    function get_bottom_left(x, y) {
+      console.assert(x < 8 && x >= 0);
+      console.assert(y < 8 && y >= 0);
+
+      return [width * x, height * (7 - y)];
+    }
+
+    function draw_image(color, piece, row, col) {
+      let [x, y] = get_bottom_left(row, col);
+      var img = document.createElement('img');
+      img.onload = function() {
+        ctx.drawImage(this, x, y, width, height);
+      };
+      img.onerror = function() {
+      	ctx.fillStyle = 'red';
+      	ctx.font = '16px Arial';
+       	ctx.fillText('Image loading error!', 10, 30);
+      };
+      img.src = "assets/chess_pieces/".concat(color).concat('/').concat(piece).concat('.png');
+    }
+    
+    function init() {
+      canvas = document.getElementById('myCanvas');
+      ctx = canvas.getContext('2d');
+      width = canvas.width / 8;
+      height = canvas.height / 8;
+
+      draw_chess_board();
+      draw_image("white", "king", 4, 2);
+    }
+
   </script>
   <body onload="init()">
   	<div style="text-align:center;">
-    	<!-- <object data="assets/chess_boards/basic.svg" type="image/svg+xml" id="basic" width="500" height="500"/> -->
       <canvas id="myCanvas" width="500" height="500" style="border:1px solid"></canvas>
     </div>
   </body>
