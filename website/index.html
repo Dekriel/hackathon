@@ -28,10 +28,12 @@
     }
 
     function draw_image(color, piece, row, col) {
-      let [x, y] = get_bottom_left(row, col);
+      row = 7 - row;
+      col = 7 - col;
+      let [x, y] = get_bottom_left(col, row);
       var img = document.createElement('img');
       img.onload = function() {
-        ctx.drawImage(this, x, y, width, height);
+        ctx.drawImage(this, y, x, width, height);
       };
       img.onerror = function() {
       	ctx.fillStyle = 'red';
@@ -48,7 +50,7 @@
       height = canvas.height / 8;
 
       draw_chess_board();
-      draw_image("white", "king", 4, 2);
+      draw_image("black", "king", 7, 4);
     }
 
   </script>
