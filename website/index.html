@@ -88,7 +88,10 @@
     }
 
     function canvas_click_handler(e) {
-      alert("" + e.clientX + " " + e.clientY);
+      var rect = e.target.getBoundingClientRect();
+      let x = (e.clientX - rect.left);
+      let y = (e.clientY - rect.top);  
+      alert("" + x + " " + y);
     }
     
     function init() {
