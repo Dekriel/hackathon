@@ -6,6 +6,25 @@
     var width;
     var height;
 
+    let char_lookup = {
+      'r': 'rook',
+      'b': 'bishop',
+      'n': 'knight',
+      'q': 'queen',
+      'k': 'king',
+      'p': 'pawn',
+    };
+
+    function getColour(ch) {
+      if (ch.toLowerCase() === ch) {
+        return 'white';
+      }
+
+      else {
+        return 'black';
+      }
+    }
+
     function draw_chess_board() {
       for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {
@@ -25,6 +44,31 @@
       console.assert(y < 8 && y >= 0);
 
       return [width * x, height * (7 - y)];
+    }
+
+    async function get_game_state() {
+      return await fetch('state')
+        .then((response) => response.json())
+        .then((data) => {return data['board']});
+    }
+
+    async function draw_game_state() {
+      let game_state = await get_game_state();
+      console.log(game_state);
+      var startrow = 0;
+      var startcol = 0;
+      for (let step = 0; step < game_state.length; step++) {
+        let c = game_state[step];
+        if (c == 'V') {
+            startrow = startrow + 1;
+            startcol = 0;
+        }
+        else if (c.toLowerCase() in char_lookup) {
+            let whatColour = getColour(c);
+            draw_image(whatColour, char_lookup[c.toLowerCase()], startcol, startrow);
+            startcol = startcol + 1;
+        }
+      }
     }
 
     function draw_image(color, piece, row, col) {
@@ -50,7 +94,10 @@
       height = canvas.height / 8;
 
       draw_chess_board();
-      draw_image("black", "king", 7, 4);
+
+      // generate the layout for black
+      
+      draw_game_state();
     }
 
   </script>
