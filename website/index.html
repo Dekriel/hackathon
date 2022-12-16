@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
   <script>
-    function init() {
-      var canvas = document.getElementById('myCanvas');
-      var context = canvas.getContext('2d');
-      var centerX = canvas.width / 2;
-      var centerY = canvas.height / 2;
-      var radius = 70;
+    var canvas;
+    var ctx;
+    var width;
+    var height;
 
-      context.beginPath();
-      context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-      context.fillStyle = 'green';
-      context.fill();
+    // origin is top left
+    function get_bottom_left(x, y) {
+      console.assert(x < 8 && x >= 0);
+      console.assert(y < 8 && y >= 0);
+
+      return [width * x, height * (7 - y)];
+    }
+    
+    function init() {
+      canvas = document.getElementById('myCanvas');
+      ctx = canvas.getContext('2d');
+      width = canvas.width / 8;
+      height = canvas.height / 8;
+
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          if (row % 2 != col % 2) continue;
+          let [x, y] = get_bottom_left(col, row);
+          ctx.beginPath();
+          ctx.rect(x, y, width, height);
+          ctx.fillStyle = '#aaaaaa';
+          ctx.fill();
+        }
+      }
     }
 
   </script>
