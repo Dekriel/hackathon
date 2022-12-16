@@ -42,6 +42,10 @@
       };
       img.src = "assets/chess_pieces/".concat(color).concat('/').concat(piece).concat('.png');
     }
+
+    function canvas_click_handler(e) {
+      alert("" + e.clientX + " " + e.clientY);
+    }
     
     function init() {
       canvas = document.getElementById('myCanvas');
@@ -51,6 +55,9 @@
 
       draw_chess_board();
       draw_image("black", "king", 7, 4);
+
+      canvas.addEventListener("click", canvas_click_handler, false);
+      
     }
 
   </script>
