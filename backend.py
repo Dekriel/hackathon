@@ -35,7 +35,7 @@ def get_moves(square):
 
 @app.route('/state')
 def state():
-    return json.dumps({'board': str(board)})
+    return json.dumps({'board': str(str(board).replace(" ", "")).replace("\n", "V")})
 
 @app.route('/move/{squareStart}-{squareEnd}')
 def make_move(squareStart, squareEnd):
