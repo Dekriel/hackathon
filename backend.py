@@ -25,7 +25,8 @@ board = chess.Board()
 
 @app.route('/', methods=['POST', 'GET'])
 def homepage():
-    return render_template("chess.html")
+    with open('website/index.html', 'r') as f:
+        return f.read()
 
 @app.route('/moves/<square>')
 def get_moves(square):
@@ -44,6 +45,10 @@ def make_move(squareStart, squareEnd):
         return 500, f"{squareStart.lower()}{squareEnd.lower()} is an invalid uci"
     return 200, state()
 
+@app.route('/assets/<path:path>')
+def get_assets(path):
+    with open(f'website/assets/{path}', 'r') as f:
+        return f.read()
 
 if __name__ == '__main__':
     app.run()
