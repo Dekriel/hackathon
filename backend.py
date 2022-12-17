@@ -25,15 +25,15 @@ def get_moves(square):
 
 @app.route('/state')
 def state():
-    return json.dumps({'board': str(str(board).replace(" ", "")).replace("\n", "V")})
+    return json.dumps({'board': str(str(board).replace(" ", "")).replace("\n", "")})
 
-@app.route('/move/{squareStart}-{squareEnd}')
+@app.route('/move/<squareStart>/<squareEnd>')
 def make_move(squareStart, squareEnd):
     try:
         board.push(chess.Move.from_uci(f"{squareStart.lower()}{squareEnd.lower()}"))
     except Exception as e:
         return 500, f"{squareStart.lower()}{squareEnd.lower()} is an invalid uci"
-    return 200, state()
+    return 200
 
 @app.route('/assets/<path:path>')
 def get_assets(path):
