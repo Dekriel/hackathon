@@ -6,27 +6,6 @@
     var width;
     var height;
 
-    let char_lookup = {
-      'r': 'rook',
-      'b': 'bishop',
-      'n': 'knight',
-      'q': 'queen',
-      'k': 'king',
-      'p': 'pawn',
-    };
-
-    let board_pos = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    let inv_board_pos = {
-    	'a':0,
-    	'b':1,
-    	'c':2,
-    	'd':3,
-    	'e':4,
-    	'f':5,
-    	'g':6,
-    	'h':7
-    };
-
     function getColour(ch) {
       if (ch.toLowerCase() === ch) return 'white';
       return 'black';
@@ -60,6 +39,7 @@
     }
 
     async function draw_game_state() {
+      let char_lookup = { 'r': 'rook', 'b': 'bishop', 'n': 'knight', 'q': 'queen', 'k': 'king', 'p': 'pawn' };
       let game_state = await get_game_state();
       var startrow = 0;
       var startcol = 0;
@@ -100,6 +80,7 @@
     }
 
     function to_UCI(row, col) {
+      let board_pos = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
       return "" + board_pos[col] + (row + 1);
     }
 
@@ -120,7 +101,8 @@
     }
 
     function from_UCI(uci) {
-    	let col = parseInt(inv_board_pos[uci.substring(0, 1)]);
+      let board_pos = { 'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7 };
+    	let col = parseInt(board_pos[uci.substring(0, 1)]);
     	let row = parseInt(uci.substring(1,2)) - 1;
     	return [row, col];
     }
