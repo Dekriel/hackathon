@@ -90,8 +90,10 @@
     function canvas_click_handler(e) {
       var rect = e.target.getBoundingClientRect();
       let x = (e.clientX - rect.left);
-      let y = (e.clientY - rect.top);  
-      alert("" + x + " " + y);
+      let y = (e.clientY - rect.top);
+      x = Math.floor(String(parseInt(x)/width));
+      y = 7 - Math.floor(String(parseInt(y)/height));
+      return [x, y];
     }
     
     function init() {
