@@ -66,7 +66,6 @@
 
     async function draw_game_state() {
       let game_state = await get_game_state();
-      console.log(game_state);
       var startrow = 0;
       var startcol = 0;
       for (let step = 0; step < game_state.length; step++) {
@@ -84,9 +83,9 @@
     }
     
     function draw_game() {
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		draw_chess_board();
-		draw_game_state();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      draw_chess_board();
+      draw_game_state();
     }
 
     function draw_image(color, piece, row, col) {
@@ -109,31 +108,20 @@
       return "" + board_pos[col] + (row + 1);
     }
 
-    async function getMoves(col, row) {
+    async function drawMoves(col, row) {
       return await fetch('moves/'.concat(to_UCI(row, col)))
         .then((response) => response.json())
-        .then((data) => {return data['moves']});
-    }
-    
-    async function rawMoves(col, row) {
-  	  return await fetch('moves/'.concat(row, col))
-        .then((response) => response.json())
-        .then((data) => {return data['moves']});
-    }
-    
-        
-    function draw_movement_indicator(row, col) {
-      var radius = Math.min(width, height) / 3;
-
-      ctx.beginPath();
-      ctx.arc(col + width / 2, row + height / 2, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = 'green';
-      ctx.fill();
+        .then((data) => {draw_indicators(data['moves'])});
     }
       
     function indicator(row, col) {
       let [x, y] = get_bottom_left(col, row);
-      draw_movement_indicator(y, x)
+      var radius = Math.min(width, height) / 3;
+
+      ctx.beginPath();
+      ctx.arc(x + width / 2, y + height / 2, radius, 0, 2 * Math.PI);
+      ctx.fillStyle = 'green';
+      ctx.fill();
     }
 
     function from_UCI(uci) {
@@ -143,14 +131,11 @@
     }
     
     function draw_indicators(moves) {
-          draw_game(); 
-		for (let i = 0; i < moves.length; i++) {
-			let [row, col] = from_UCI(moves[i]);
-			console.log(row)
-			console.log(col)
-			console.log("" + row + " " + col);
-			indicator(row, col);
-		}
+      draw_game(); 
+      for (let i = 0; i < moves.length; i++) {
+        let [row, col] = from_UCI(moves[i]);
+        indicator(row, col);
+      }
     }
     
 
@@ -160,7 +145,7 @@
       let y = (e.clientY - rect.top);
       x = Math.floor(String(parseInt(x)/width));
       y = 7 - Math.floor(String(parseInt(y)/height));
-      draw_indicators(await getMoves(x, y));
+      drawMoves(x, y);
     }
     
     function init() {
@@ -181,4 +166,3 @@
     </div>
   </body>
 </html>
-
