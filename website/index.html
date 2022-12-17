@@ -41,18 +41,11 @@
     async function draw_game_state() {
       let char_lookup = { 'r': 'rook', 'b': 'bishop', 'n': 'knight', 'q': 'queen', 'k': 'king', 'p': 'pawn' };
       let game_state = await get_game_state();
-      var startrow = 0;
-      var startcol = 0;
-      for (let step = 0; step < game_state.length; step++) {
-        let c = game_state[step];
-        if (c == 'V') {
-            startrow = startrow + 1;
-            startcol = 0;
-        }
-        else if (c.toLowerCase() in char_lookup) {
-            let whatColour = getColour(c);
-            draw_image(whatColour, char_lookup[c.toLowerCase()], startcol, startrow);
-            startcol = startcol + 1;
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          let c = game_state[row*8 + col];
+          if (c.toLowerCase() in char_lookup)
+            draw_image(getColour(c), char_lookup[c.toLowerCase()], col, row);
         }
       }
     }
@@ -114,7 +107,6 @@
         indicator(row, col);
       }
     }
-    
 
     async function canvas_click_handler(e) {
       var rect = e.target.getBoundingClientRect();
