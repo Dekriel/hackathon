@@ -2,6 +2,7 @@ from flask import *
 import json
 import chess
 from random import choice
+import base64
 
 def filter_moves_on_piece(moves, square):
     moves = [str(m) for m in moves]
@@ -38,6 +39,24 @@ def make_move(squareStart, squareEnd):
         else:
             wins['wins'] = "white wins"
     return wins
+
+@app.route('/reset')
+def reset():
+    board.reset()
+    return ''
+
+@app.route('/load/<seed>')
+def load(seed):
+    global board
+    new_seed = base64.b64decode(seed)
+    board = chess.Board(str(new_seed)[2:-1])
+    print(board)
+    return ''
+
+@app.route('/get')
+def get():
+    global board
+    return json.dumps({'state': repr(board)[len('Board('):-1]})
 
 @app.route('/assets/<path:path>')
 def get_assets(path):
