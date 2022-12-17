@@ -1,6 +1,7 @@
 from flask import *
 import json
 import chess
+from random import choice
 
 def filter_moves_on_piece(moves, square):
     moves = [str(m) for m in moves]
@@ -30,7 +31,13 @@ def state():
 @app.route('/move/<squareStart>/<squareEnd>')
 def make_move(squareStart, squareEnd):
     board.push(chess.Move.from_uci(f"{squareStart.lower()}{squareEnd.lower()}"))
-    return ''
+    wins = {'wins': choice(["Good move!", "Are you sure?", "lol", "plays in oregon", "i'm impressed", "why", "ouch", "william sucks", "only in ohio"])}
+    if board.is_checkmate():
+        if board.turn == chess.WHITE:
+            wins['wins'] = "black wins"
+        else:
+            wins['wins'] = "white wins"
+    return wins
 
 @app.route('/assets/<path:path>')
 def get_assets(path):
