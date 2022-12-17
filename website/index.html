@@ -126,9 +126,10 @@
       let move_end = _in(uci, possible_moves);
       if (move_end) {
         // process move
-        await fetch("move/" + last_clicked + "/" + move_end)
-        .then((response) => response)
-        .then((data) => {draw_game();})
+        document.getElementById("win").innerHTML = await fetch("move/" + last_clicked + "/" + move_end)
+        .then((response) => response.json())
+        .then((data) => {return data['wins'];});
+        draw_game();
       } 
       else if (last_clicked !== uci) {
         last_clicked = to_UCI(y, x);
@@ -151,6 +152,7 @@
   </script>
   <body onload="init()">
   	<div style="text-align:center;">
+      <h1 id="win">welcome to chess</h1>
       <canvas id="myCanvas" width="500" height="500" style="border:1px solid"></canvas>
     </div>
     <button width="50" height="20">New game</button>
