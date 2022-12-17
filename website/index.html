@@ -10,7 +10,7 @@
 
     function getColour(ch) {
       if (ch.toLowerCase() === ch) return 'black';
-      return 'white';
+      return '';
     }
 
     function draw_chess_board() {
@@ -70,7 +70,7 @@
       	ctx.font = '16px Arial';
        	ctx.fillText('Image loading error!', 10, 30);
       };
-      img.src = "assets/chess_pieces/".concat(color).concat('/').concat(piece).concat('.png');
+      img.src = "assets/chess_pieces/".concat(color).concat(piece).concat('.png');
     }
 
     function to_UCI(row, col) {
