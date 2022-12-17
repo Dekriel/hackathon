@@ -29,11 +29,8 @@ def state():
 
 @app.route('/move/<squareStart>/<squareEnd>')
 def make_move(squareStart, squareEnd):
-    try:
-        board.push(chess.Move.from_uci(f"{squareStart.lower()}{squareEnd.lower()}"))
-    except Exception as e:
-        return 500, f"{squareStart.lower()}{squareEnd.lower()} is an invalid uci"
-    return 200
+    board.push(chess.Move.from_uci(f"{squareStart.lower()}{squareEnd.lower()}"))
+    return ''
 
 @app.route('/assets/<path:path>')
 def get_assets(path):
