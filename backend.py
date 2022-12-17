@@ -3,18 +3,8 @@ import json
 import chess
 
 def filter_moves_on_piece(moves, square):
-    moves_ls = [str(move) for move in moves]
-    new = []
-    valid = []
-    for i in moves_ls:
-        j = chess.BaseBoard().piece_at(chess.parse_square(i[:2]))
-        new.append(str(j) + i[-2:])
-        for k in new:
-            print(k)
-            if square in k:
-                valid.append(k)
-
-    return json.dumps({moves: valid})
+    moves = [str(m) for m in moves]
+    return json.dumps({'moves': [m[-2:] for m in moves if m[:2] == square]})
 
 # create the app
 app = Flask(__name__)
