@@ -60,7 +60,6 @@
 
     function draw_image(color, piece, row, col) {
       row = 7 - row;
-      col = 7 - col;
       let [x, y] = get_bottom_left(col, row);
       var img = document.createElement('img');
       img.onload = function() {
