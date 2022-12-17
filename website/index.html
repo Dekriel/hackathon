@@ -15,6 +15,8 @@
       'p': 'pawn',
     };
 
+    let board_pos = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
     function getColour(ch) {
       if (ch.toLowerCase() === ch) {
         return 'white';
@@ -87,13 +89,23 @@
       img.src = "assets/chess_pieces/".concat(color).concat('/').concat(piece).concat('.png');
     }
 
-    function canvas_click_handler(e) {
+    function to_UCI(row, col) {
+      return "" + board_pos[col] + (row + 1);
+    }
+
+    async function getMoves(col, row) {
+      return await fetch('moves/'.concat(to_UCI(row, col)))
+        .then((response) => response.json())
+        .then((data) => {return data['moves']});
+    }
+
+    async function canvas_click_handler(e) {
       var rect = e.target.getBoundingClientRect();
       let x = (e.clientX - rect.left);
       let y = (e.clientY - rect.top);
       x = Math.floor(String(parseInt(x)/width));
       y = 7 - Math.floor(String(parseInt(y)/height));
-      return [x, y];
+      alert(await getMoves(x, y));
     }
     
     function init() {
